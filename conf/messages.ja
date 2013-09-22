@@ -1,0 +1,12 @@
+eventMedia=Media
+eventVenue=Venue
+eventVenueType=Venue Type
+eventVenueAddress=Venue Address
+eventVenuePhone=Phone
+eventVenueAccess=Access
+eventVenueOpenineHour=Opening Hour
+eventVenueClosingHour=Closing Hour
+eventDateStart=Date Start
+eventDateEnd=Date End
+eventPrice=Price
+eventDescription=Description

@@ -1,0 +1,44 @@
+@import "layout.less";
+#target {
+	width: 270px;
+}
+
+dl.eventDetails {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.00, #c3e1ff), color-stop(1.00, #ddffff));
+	background: -webkit-linear-gradient(#c3e1ff, #ddffff);
+	background: -moz-linear-gradient(#c3e1ff, #ddffff);
+	background: -o-linear-gradient(#c3e1ff, #ddffff);
+	background: -ms-linear-gradient(#c3e1ff, #ddffff);
+	background: linear-gradient(#c3e1ff, #ddffff);
+	border-radius: 10px;
+	box-shadow: 0px 0px 5px 1px #ddffff;
+}
+
+dl.eventDetails dt {
+	float: left;
+	clear: left;
+	width: 180px;
+	font-weight: bold;
+	padding: 5px;
+	text-shadow: 0px 0px 3px #999;
+	border-top: 1px solid #ccc;
+}
+
+dl.eventDetails dd {
+	margin-left: 190px;
+	padding: 5px;
+	border-top: 1px solid #ccc;
+	font-size: smaller;
+}
+
+dl.eventDetails dt:first-child {
+	border: none;
+}
+
+dl.eventDetails dt:first-child + dd {
+	border: none;
+}
+
+.eventInfoWindowTitle {
+	font-size : 9pt;	
+}

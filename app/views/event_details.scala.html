@@ -1,0 +1,36 @@
+@* event_details Template File *@
+@(event: Event)
+
+@import play.i18n._
+
+@main("@event.name details") {
+	<h3>@event.name</h3>
+  <dl class="eventDetails">
+    <dt>@Messages.get("eventImage")</dt> 
+    <dd><img src="@event.imageLarge.source"></img></dd>
+    <dt>@Messages.get("eventMedia")</dt> 
+    <dd>@event.media</dd>
+    <dt>@Messages.get("eventVenue")</dt> 
+    <dd>@event.venue.name</dd>
+    <dt>@Messages.get("eventVenueType")</dt> 
+    <dd>@event.venue.venueType</dd>
+    <dt>@Messages.get("eventVenueAddress")</dt> 
+    <dd>@event.venue.address</dd>
+    <dt>@Messages.get("eventVenuePhone")</dt> 
+    <dd>@event.venue.phone</dd>
+    <dt>@Messages.get("eventVenueAccess")</dt> 
+    <dd>@event.venue.access</dd>
+    <dt>@Messages.get("eventVenueOpenineHour")</dt> 
+    <dd>@event.venue.openingHour</dd>
+    <dt>@Messages.get("eventVenueClosingHour")</dt> 
+    <dd>@event.venue.closingHour</dd>
+    <dt>@Messages.get("eventDateStart")</dt> 
+    <dd>@event.dateStart</dd>
+    <dt>@Messages.get("eventDateEnd")</dt> 
+    <dd>@event.dateEnd</dd>
+    <dt>@Messages.get("eventPrice")</dt> 
+    <dd>@event.price</dd>
+    <dt>@Messages.get("eventDescription")</dt> 
+    <dd>@event.description</dd>
+  </dl>
+}

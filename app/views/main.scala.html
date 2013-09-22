@@ -1,0 +1,27 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html ng-app>
+    <head>
+        <title>@title</title>
+        <link rel="stylesheet" media="screen" href="/assets/stylesheets/main.css">
+        <link rel="stylesheet" media="screen" href="/assets/stylesheets/todc-bootstrap.css">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <script src="/assets/javascripts/jquery-1.9.0.min.js"></script>
+        <script src="/assets/javascripts/angular.min.js"></script>
+        <script src="/assets/javascripts/events.js"></script>
+        <script src="/assets/javascripts/array-util.js"></script>
+        <script src="/assets/javascripts/google-maps-util.js"></script>
+        <script src="/assets/javascripts/updateCircles.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+    </head>
+    <body>
+        @content
+        <script>
+				    google.maps.event.addDomListener(window, 'load', mapsutil.initialize);
+		    </script>
+    </body>
+</html>
