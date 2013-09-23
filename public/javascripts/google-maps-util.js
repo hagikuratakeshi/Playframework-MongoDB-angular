@@ -33,14 +33,15 @@ var mapsutil = {
 
 	putMarker : function(event) {
 		if (!event.latlng) {
-			//TODO Get latlng from address
+			// TODO Get latlng from address
 			return;
 		}
 		var markerOpts = {
 			position : new google.maps.LatLng(event.latlng.lat, event.latlng.lon),
 			map : map,
 			animation : google.maps.Animation.DROP,
-			title : event.name
+			title : event.name,
+			event : event
 		};
 		var marker = new google.maps.Marker(markerOpts);
 
@@ -53,17 +54,57 @@ var mapsutil = {
 			}
 		});
 
-		var infoWindow = new google.maps.InfoWindow(
-				{
-					content : '<div class="eventInfoWindowTitle">' + event.name.substr(0, 5) + "..." + 
-					  '</div> <img src="' + event.imageLarge.source + '" width="40" height="40" /> '
-				});
+		var infoWindow = new google.maps.InfoWindow({
+			content : '<div class="eventInfoWindowTitle">' + event.name.substr(0, 5) + "..."
+					+ '</div> <img src="' + event.imageLarge.source + '" width="40" height="40" /> '
+		});
 		infoWindow.open(map, marker);
 
+		var detailInfoWindow = new google.maps.InfoWindow({
+			content : '<h3>' + event.name + '</h3>' +
+			'<dl class="eventDetails">' +
+			'  <dt>' + Messages('eventImage') + '</dt> ' +
+			'  <dd><img src="'+ event.imageLarge.source + '"></img></dd>' +
+			'  <dt>' + Messages('eventMedia') + '</dt> ' +
+			'  <dd>' + event.media + '</dd>' +
+			'  <dt>' + Messages('eventVenue') + '</dt> ' +
+			'  <dd>' + event.venue.name + '</dd>' +
+			'  <dt>' + Messages('eventVenueType') + '</dt> ' +
+			'  <dd>' + event.venue.venueType + '</dd>' +
+			'  <dt>' + Messages('eventVenueAddress') + '</dt> ' +
+			'  <dd>' + event.venue.address + '</dd>' +
+			'  <dt>' + Messages('eventVenuePhone') + '</dt> ' +
+			'  <dd>' + event.venue.phone + '</dd>' +
+			'  <dt>' + Messages('eventVenueAccess') + '</dt> ' +
+			'  <dd>' + event.venue.access + '</dd>' +
+			'  <dt>' + Messages('eventVenueOpenineHour') + '</dt> ' +
+			'  <dd>' + event.venue.openingHour + '</dd>' +
+			'  <dt>' + Messages('eventVenueClosingHour') + '</dt> ' +
+			'  <dd>' + event.venue.closingHour + '</dd>' +
+			'  <dt>' + Messages('eventDateStart') + '</dt> ' +
+			'  <dd>' + new Date(event.dateStart) + '</dd>' +
+			'  <dt>' + Messages('eventDateEnd') + '</dt> ' +
+			'  <dd>' + new Date(event.dateEnd) + '</dd>' +
+			'  <dt>' + Messages('eventPrice') + '</dt> ' +
+			'  <dd>' + event.price + '</dd>' +
+			'  <dt>' + Messages('eventDescription') + '</dt> ' +
+			'  <dd>' + event.description + '</dd>' +
+			'</dl>',
+			zIndex : 10000
+		});
+		
+		google.maps.event.addListener(marker, 'click', function() {
+			infoWindow.close();
+			detailInfoWindow.open(map, marker);
+		});
+
+		google.maps.event.addListener(detailInfoWindow, 'closeclick', function() {
+			infoWindow.open(map, marker);
+		});
 	},
 	initialize : function() {
 		var mapOptions = {
-			zoom : 14,
+			zoom : 16,
 			center : new google.maps.LatLng(35.66158511497833, 139.73045148651127),
 			mapTypeId : google.maps.MapTypeId.ROADMAP,
 			panControl : false
@@ -82,12 +123,14 @@ var mapsutil = {
 		});
 
 		google.maps.event.addListener(map, 'dragend', function() {
-			// 0.3 seconds after the center of the map has changed, update the
-			// nearby events.
-//			window.setTimeout(function() {
-				mapsutil.updateEventsByPolygon();
-//			}, 250);
+			mapsutil.updateEventsByPolygon();
 		});
+		google.maps.event.addListener(map, 'zoom_changed', function() {
+			mapsutil.updateEventsByPolygon();
+		});
+		
 		mapsutil.updateNearByEvents();
+
+		var mc = new MarkerClusterer(map);
 	}
 };

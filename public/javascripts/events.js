@@ -11,13 +11,13 @@ function nearByEventsCtrl($scope, $http) {
 			$scope.nearByEvents = data;
   		$('#eventSearchSpinner').hide();
   		
-			console.log(data);
   		for (var i = 0; i < data.length; i++) {
   			var event = data[i];
   			if (mapsutil.isMarkerAlreadyPut(event) < 0) {
   				mapsutil.putMarker(event);
   			}
   		}
+  		var mc = new MarkerClusterer(map, mapsutil.markers);
 		}).error(function(data, status, headers, config) {
 			// TODO error handling
   		$('#eventSearchSpinner').hide();
