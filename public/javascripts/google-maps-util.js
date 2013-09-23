@@ -56,13 +56,17 @@ var mapsutil = {
 
 		var infoWindow = new google.maps.InfoWindow({
 			content : '<div class="eventInfoWindowTitle">' + event.name.substr(0, 5) + "..."
-					+ '</div> <img src="' + event.imageLarge.source + '" width="40" height="40" /> '
+					+ '</div> <img src="' + event.imageLarge.source + '" width="40" height="40" /> ',
+      disableAutoPan : true
 		});
 		infoWindow.open(map, marker);
 
+		function formatDateAsYYYYMMDD(date) {
+			return (date.getYear() + 1900) + ' / ' + (date.getMonth() + 1) + ' / ' + date.getDay();
+		}
 		var detailInfoWindow = new google.maps.InfoWindow({
 			content : '<h3>' + event.name + '</h3>' +
-			'<dl class="eventDetails">' +
+			'<dl class="dl-horizontal">' +
 			'  <dt>' + Messages('eventImage') + '</dt> ' +
 			'  <dd><img src="'+ event.imageLarge.source + '"></img></dd>' +
 			'  <dt>' + Messages('eventMedia') + '</dt> ' +
@@ -82,9 +86,9 @@ var mapsutil = {
 			'  <dt>' + Messages('eventVenueClosingHour') + '</dt> ' +
 			'  <dd>' + event.venue.closingHour + '</dd>' +
 			'  <dt>' + Messages('eventDateStart') + '</dt> ' +
-			'  <dd>' + new Date(event.dateStart) + '</dd>' +
+			'  <dd>' + formatDateAsYYYYMMDD(new Date(event.dateStart)) + '</dd>' +
 			'  <dt>' + Messages('eventDateEnd') + '</dt> ' +
-			'  <dd>' + new Date(event.dateEnd) + '</dd>' +
+			'  <dd>' + formatDateAsYYYYMMDD(new Date(event.dateEnd)) + '</dd>' +
 			'  <dt>' + Messages('eventPrice') + '</dt> ' +
 			'  <dd>' + event.price + '</dd>' +
 			'  <dt>' + Messages('eventDescription') + '</dt> ' +
