@@ -39,11 +39,6 @@ object Event extends ModelCompanion[Event, ObjectId] {
   // salat objects
   val collection = MongoConnection()("eventoyou")("events")
   val dao = new SalatDAO[Event, ObjectId](collection = collection) {}
-
-//  implicit val ctx = new Context {
-//    val name = "Custom_Classloader"
-//  }
-//  ctx.registerClassLoader(Play.classloader(Play.current))
 }
 
 case class Event(@Key("_id") id: String, name: String, venue: Venue, media: String, description: String,
