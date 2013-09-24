@@ -9,7 +9,7 @@ var mapsutil = {
 			return -1;
 		}
 		var markerOpts = {
-			position : new google.maps.LatLng(event.latlng.lat, event.latlng.lon),
+			position : new google.maps.LatLng(event.latlng.latitude, event.latlng.longitude),
 			map : map,
 			title : 'marker',
 			visible : false,
@@ -17,9 +17,9 @@ var mapsutil = {
 		var marker = new google.maps.Marker(markerOpts);
 		return arrayUtil.binarySearch(marker, mapsutil.markers, function(left, right) {
 			if (left.position.ob != right.position.ob) {
-				return left.position.ob - right.position.ob;
+				return left.position.lat() - right.position.lat();
 			} else {
-				return left.position.pb - right.position.pb;
+				return left.position.lng() - right.position.lng();
 			}
 		});
 	},
@@ -37,7 +37,7 @@ var mapsutil = {
 			return;
 		}
 		var markerOpts = {
-			position : new google.maps.LatLng(event.latlng.lat, event.latlng.lon),
+			position : new google.maps.LatLng(event.latlng.latitude, event.latlng.longitude),
 			map : map,
 			animation : google.maps.Animation.DROP,
 			title : event.name,
@@ -48,9 +48,9 @@ var mapsutil = {
 		// Keep markers sorted by the latitude (next longitude)
 		arrayUtil.binaryInsert(marker, mapsutil.markers, function(left, right) {
 			if (left.position.ob != right.position.ob) {
-				return left.position.ob - right.position.ob;
+				return left.position.lat() - right.position.lat();
 			} else {
-				return left.position.pb - right.position.pb;
+				return left.position.lng() - right.position.lng();
 			}
 		});
 
@@ -62,7 +62,7 @@ var mapsutil = {
 		infoWindow.open(map, marker);
 
 		function formatDateAsYYYYMMDD(date) {
-			return (date.getYear() + 1900) + ' / ' + (date.getMonth() + 1) + ' / ' + date.getDay();
+			return (date.getYear() + 1900) + ' / ' + (date.getMonth() + 1) + ' / ' + date.getDate();
 		}
 		var detailInfoWindow = new google.maps.InfoWindow({
 			content : '<h3>' + event.name + '</h3>' +

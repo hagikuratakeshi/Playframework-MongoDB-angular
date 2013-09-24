@@ -6,4 +6,4 @@ object LatLng {
   implicit val latlngJsonWriter = Json.writes[LatLng]
 }
 
-case class LatLng(lat: Double, lon: Double)
+case class LatLng(longitude: Double, latitude: Double)

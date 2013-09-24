@@ -20,8 +20,8 @@ object Event extends ModelCompanion[Event, ObjectId] {
     val venueNode = xml \\ "Venue"
     return Event(new ObjectId().toString(), (xml \ "Name").text, Venue.fromXml(xml \\ "Venue"), (xml \\ "Media").text, (xml \\ "Description").text,
       Image.fromXml(xml), (xml \\ "Karma").text, (xml \\ "Price").text, fromXmlToDateTime(xml, "DateStart"),
-      fromXmlToDateTime(xml, "DateEnd"), (xml \\ "ScheduleNote").text, LatLng(ParseDouble.parseDouble((xml \\ "Latitude").text).get,
-        ParseDouble.parseDouble((xml \\ "Longitude").text).get))
+      fromXmlToDateTime(xml, "DateEnd"), (xml \\ "ScheduleNote").text, LatLng(ParseDouble.parseDouble((xml \\ "Longitude").text).get,
+        ParseDouble.parseDouble((xml \\ "Latitude").text).get))
   }
 
   def fromXmlToDateTime(xml: Node, elementName: String): Date = {

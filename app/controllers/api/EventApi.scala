@@ -20,7 +20,7 @@ object EventApi extends Controller {
   def searchWithin(latitude: Double, longitude: Double) = Action {
     val events = Event.find(MongoDBObject("latlng" ->
       MongoDBObject("$geoWithin" ->
-        MongoDBObject("$center" -> List((latitude, longitude), 0.01)))))
+        MongoDBObject("$center" -> List((longitude, latitude), 0.01)))))
     Ok(Json.toJson(events.toList))
   }
   
@@ -28,7 +28,7 @@ object EventApi extends Controller {
     val events = Event.find(MongoDBObject("latlng" ->
       MongoDBObject("$geoWithin" ->
         MongoDBObject("$polygon" -> 
-            List(List(latMax, lonMin), (latMax, lonMax), (latMin, lonMin), (latMin, lonMax)
+            List(List(lonMin, latMax), (lonMax, latMax), (lonMin, latMin), (lonMax, latMin)
                 )))))
     Ok(Json.toJson(events.toList))
   }
