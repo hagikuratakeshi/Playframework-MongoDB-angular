@@ -5,7 +5,7 @@ import play.Project._
 
 object ApplicationBuild extends Build {
 
-  val appName = "myFirstPlayApp"
+  val appName = "event-scala"
   val appVersion = "1.0-SNAPSHOT"
 
   val appDependencies = Seq(
