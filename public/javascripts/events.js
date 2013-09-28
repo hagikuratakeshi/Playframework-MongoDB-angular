@@ -8,8 +8,8 @@ function nearByEventsCtrl($scope, $http) {
 			method : "GET",
 			params : params
 		}).success(function(data, status, headers, config) {
-			console.log(data);
 			$scope.nearByEvents = data;
+			globalEvents = data;
   		$('#eventSearchSpinner').hide();
   		
   		for (var i = 0; i < data.length; i++) {
@@ -42,4 +42,9 @@ function nearByEventsCtrl($scope, $http) {
 			lonMin : mapBounds.getSouthWest().lng()
 		});
 	};
+	
+	$scope.openDetailedInfoWindow = function(e) {
+		console.log(e);
+		mapsutil.openDetailedInfoWindow(e.currentTarget.innerText);
+	}
 }

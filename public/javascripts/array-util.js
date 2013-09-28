@@ -33,6 +33,7 @@ var arrayUtil = {
 			return arrayUtil.locationOf(element, array, sortFunction, start, pivot);
 		}
 	},
+	
 	/**
 	 * Returns the index of the index equivalent to the element compared by the sortFunction
 	 *  or returns -1 if nothing is found.

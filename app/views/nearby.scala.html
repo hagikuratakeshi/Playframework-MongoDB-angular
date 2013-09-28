@@ -2,11 +2,8 @@
 <div id="nearByEventsId" class="container-fluid" ng-controller="nearByEventsCtrl">
 <div class="row-fluid">
   <div id="leftColumn" class="span8">
-  <!-- 
-  	<h2>Nearby events </h2>
-    -->
       <div id="panel">
-        <input id="searchBox" type="text" placeholder="Search Box">
+        <input id="searchBox" type="text" placeholder="Search Place">
       </div>
       <div id="map-canvas" style="width:900px; height:700px"></div>
   </div>
@@ -15,8 +12,8 @@
         <img src="/assets/images/ajax-loader.gif" alt="" />
       </div>
       <ul>
-        <li ng-repeat="event in nearByEvents">
-          <span>{{event.name}}</span>
+        <li class="eventItem" ng-repeat="event in nearByEvents" ng-mouseenter="openDetailedInfoWindow($event)">
+          <span ng-model="name">{{event.name}}</span>
           <div>
             <img class="eventImage" src="{{event.imageLarge.source}}" alt="" />
           </div>

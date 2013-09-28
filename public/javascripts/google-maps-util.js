@@ -4,6 +4,7 @@ var mapsutil = {
 	 * Retains the markers put in the map. Sorted by the latitude.
 	 */
 	markers : [],
+	detailedInfoWindows : [],
 	isMarkerAlreadyPut : function(event) {
 		if (mapsutil.markers.length == 0) {
 			return -1;
@@ -13,14 +14,13 @@ var mapsutil = {
 			map : map,
 			title : 'marker',
 			visible : false,
+			event : event
 		};
 		var marker = new google.maps.Marker(markerOpts);
 		return arrayUtil.binarySearch(marker, mapsutil.markers, function(left, right) {
-			if (left.position.ob != right.position.ob) {
-				return left.position.lat() - right.position.lat();
-			} else {
-				return left.position.lng() - right.position.lng();
-			}
+			if (left.event.id > right.event.id) {return -1;}
+			if (left.event.id < right.event.id) {return 1;}
+			return 0;
 		});
 	},
 	updateNearByEvents : function() {
@@ -31,42 +31,28 @@ var mapsutil = {
 		angular.element('#nearByEventsId').scope().getEventsByPolygon();
 	},
 
-	putMarker : function(event) {
-		if (!event.latlng) {
-			// TODO Get latlng from address
-			return;
-		}
-		var markerOpts = {
-			position : new google.maps.LatLng(event.latlng.latitude, event.latlng.longitude),
-			map : map,
-			animation : google.maps.Animation.DROP,
-			title : event.name,
-			event : event
-		};
-		var marker = new google.maps.Marker(markerOpts);
-
-		// Keep markers sorted by the latitude (next longitude)
-		arrayUtil.binaryInsert(marker, mapsutil.markers, function(left, right) {
-			if (left.position.ob != right.position.ob) {
-				return left.position.lat() - right.position.lat();
-			} else {
-				return left.position.lng() - right.position.lng();
-			}
-		});
-
-		var infoWindow = new google.maps.InfoWindow({
-			content : '<div class="eventInfoWindowTitle">' + event.name.substr(0, 5) + "..."
-					+ '</div> <img src="' + event.imageLarge.source + '" width="40" height="40" /> ',
-      disableAutoPan : true
-		});
-		infoWindow.open(map, marker);
-
+	openDetailedInfoWindow : function(eventName) {
+		for (var i = 0; i < mapsutil.markers.length; i++) { 
+			var target = mapsutil.markers[i]; 
+			if (eventName.indexOf(target.event.name) >= 0) {
+				var detailInfoWindow = mapsutil.makeDetailedInfoWindow(target.event);
+    		// close already opened detailed info window.
+		    mapsutil.detailedInfoWindows.map(function(detailedWindow) {detailedWindow.close();})
+		    mapsutil.detailedInfoWindows = [];
+		    
+				detailInfoWindow.open(map, mapsutil.markers[i]);
+		    mapsutil.detailedInfoWindows.push(detailInfoWindow);
+		  }
+	  }	
+	},
+	makeDetailedInfoWindow : function(event) {
+		
 		function formatDateAsYYYYMMDD(date) {
 			return (date.getYear() + 1900) + ' / ' + (date.getMonth() + 1) + ' / ' + date.getDate();
 		}
 		var detailInfoWindow = new google.maps.InfoWindow({
 			content : '<h3>' + event.name + '</h3>' +
-			'<dl class="dl-horizontal">' +
+			'<dl class="dl-horizontal detailedInfoWindow">' +
 			'  <dt>' + Messages('eventImage') + '</dt> ' +
 			'  <dd><img src="'+ event.imageLarge.source + '"></img></dd>' +
 			'  <dt>' + Messages('eventMedia') + '</dt> ' +
@@ -96,10 +82,41 @@ var mapsutil = {
 			'</dl>',
 			zIndex : 10000
 		});
+		return detailInfoWindow; 
+	},
+	putMarker : function(event) {
+		if (!event.latlng) {
+			// TODO Get latlng from address
+			return;
+		}
+		var markerOpts = {
+			position : new google.maps.LatLng(event.latlng.latitude, event.latlng.longitude),
+			map : map,
+			animation : google.maps.Animation.DROP,
+			title : event.name,
+			event : event
+		};
+		var marker = new google.maps.Marker(markerOpts);
+
+		// Keep markers sorted by the latitude (next longitude)
+		arrayUtil.binaryInsert(marker, mapsutil.markers, function(left, right) {
+			if (left.event.id > right.event.id) {return -1;}
+			if (left.event.id < right.event.id) {return 1;}
+			return 0;
+		});
+
+		var infoWindow = new google.maps.InfoWindow({
+			content : '<div class="eventInfoWindowTitle">' + event.name.substr(0, 5) + "..."
+					+ '</div> <img src="' + event.imageLarge.source + '" width="40" height="40" /> ',
+      disableAutoPan : true
+		});
 		
+		var detailInfoWindow = mapsutil.makeDetailedInfoWindow(event);
+		infoWindow.open(map, marker);
 		google.maps.event.addListener(marker, 'click', function() {
 			infoWindow.close();
 			detailInfoWindow.open(map, marker);
+			mapsutil.detailedInfoWindows.push(detailInfoWindow);
 		});
 
 		google.maps.event.addListener(detailInfoWindow, 'closeclick', function() {
@@ -123,6 +140,7 @@ var mapsutil = {
 			var places = searchBox.getPlaces();
 			if (places.length > 0) {
 				map.panTo(places[0].geometry.location);
+				mapsutil.updateEventsByPolygon();
 			}
 		});
 
