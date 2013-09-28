@@ -17,5 +17,5 @@ object IntUtil {
 }
 
 object ParseDouble {
-  def parseDouble(s: String) = try { Some(s.toDouble) } catch { case _ => None }
+  def parseDouble(s: String) = try { Some(s.toDouble) } catch { case _: Throwable => None }
 }

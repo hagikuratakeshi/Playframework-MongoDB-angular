@@ -44,7 +44,6 @@ function nearByEventsCtrl($scope, $http) {
 	};
 	
 	$scope.openDetailedInfoWindow = function(e) {
-		console.log(e);
 		mapsutil.openDetailedInfoWindow(e.currentTarget.innerText);
 	}
 }

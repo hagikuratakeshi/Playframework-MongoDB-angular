@@ -4,6 +4,10 @@ var mapsutil = {
 	 * Retains the markers put in the map. Sorted by the latitude.
 	 */
 	markers : [],
+	
+	/** 
+	 * Retains the detailed info windows.
+	 */
 	detailedInfoWindows : [],
 	isMarkerAlreadyPut : function(event) {
 		if (mapsutil.markers.length == 0) {
@@ -51,7 +55,7 @@ var mapsutil = {
 			return (date.getYear() + 1900) + ' / ' + (date.getMonth() + 1) + ' / ' + date.getDate();
 		}
 		var detailInfoWindow = new google.maps.InfoWindow({
-			content : '<h3>' + event.name + '</h3>' +
+			content : '<h4>' + event.name + '</h4>' +
 			'<dl class="dl-horizontal detailedInfoWindow">' +
 			'  <dt>' + Messages('eventImage') + '</dt> ' +
 			'  <dd><img src="'+ event.imageLarge.source + '"></img></dd>' +
@@ -150,7 +154,7 @@ var mapsutil = {
 		google.maps.event.addListener(map, 'zoom_changed', function() {
 			mapsutil.updateEventsByPolygon();
 		});
-		
+	  
 		mapsutil.updateNearByEvents();
 
 		var mc = new MarkerClusterer(map);

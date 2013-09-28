@@ -5,15 +5,15 @@
       <div id="panel">
         <input id="searchBox" type="text" placeholder="Search Place">
       </div>
-      <div id="map-canvas" style="width:900px; height:700px"></div>
+      <div id="map-canvas" style="width: 100%; height: 700px"></div>
   </div>
-  <div id="rightColumn" class="span3">
+  <div id="rightColumn" class="well span4">
       <div id="eventSearchSpinner" class="spinner">
         <img src="/assets/images/ajax-loader.gif" alt="" />
       </div>
-      <ul>
+      <ul class="nav-list nav">
         <li class="eventItem" ng-repeat="event in nearByEvents" ng-mouseenter="openDetailedInfoWindow($event)">
-          <span ng-model="name">{{event.name}}</span>
+          <span class="label label-info" ng-model="name">{{event.name}}</span>
           <div>
             <img class="eventImage" src="{{event.imageLarge.source}}" alt="" />
           </div>

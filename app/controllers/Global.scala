@@ -1,19 +1,22 @@
-package controllers
+import play.api._
+import play.api.Play.current
+import play.api.libs.concurrent.Akka
+import akka.actor.Props
+import scala.concurrent.duration._
+import scala.concurrent.ExecutionContext.Implicits.global
+import actor.TokyoArtBeatRequestActor
 
-import play.api.GlobalSettings
-import play.Logger
+object Global extends GlobalSettings {
 
-class Global extends GlobalSettings {
+  override def onStart(app: Application) {
+    Logger.info("Application has started")
+    
+    val tokyoArtBeatActor = Akka.system.actorOf(Props[TokyoArtBeatRequestActor], name = "tokyoArtBeatActor")
+    Akka.system.scheduler.schedule(5 hours, 1 day, tokyoArtBeatActor, "tick")
+  }
 
-  @Override
-  def onStart(app: play.Application) = {
-    println("Application has started")
-    Logger.info("Application has started");
-  }  
-  
-  @Override
-  def onStop(app: play.Application) = {
-    println("Application shutdown...");
-    Logger.info("Application shutdown...");
-  }  
+  override def onStop(app: Application) {
+    Logger.info("Application shutdown...")
+  }
+
 }
