@@ -19,7 +19,7 @@ class TokyoArtBeatRequestActor extends UntypedActor {
       events.foreach(e => {
         if (Event.find(MongoDBObject("name" -> e.name)).size == 0) {
           Event.save(e)
-          Logger.info("Event saved from Tokyo Art Beat : " + e)
+          Logger.info("Event saved from Tokyo Art Beat : " + e.name)
         }
       })
       // TODO use guava to rate limit
