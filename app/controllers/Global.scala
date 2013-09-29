@@ -12,7 +12,7 @@ object Global extends GlobalSettings {
     Logger.info("Application has started")
     
     val tokyoArtBeatActor = Akka.system.actorOf(Props[TokyoArtBeatRequestActor], name = "tokyoArtBeatActor")
-    Akka.system.scheduler.schedule(5 hours, 1 day, tokyoArtBeatActor, "tick")
+    Akka.system.scheduler.schedule(10 seconds, 1 day, tokyoArtBeatActor, "tick")
   }
 
   override def onStop(app: Application) {
