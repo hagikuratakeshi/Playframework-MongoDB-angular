@@ -12,13 +12,19 @@ function nearByEventsCtrl($scope, $http) {
 			globalEvents = data;
   		$('#eventSearchSpinner').hide();
   		
+  		var newlyMarker = [];
   		for (var i = 0; i < data.length; i++) {
   			var event = data[i];
   			if (mapsutil.isMarkerAlreadyPut(event) < 0) {
-  				mapsutil.putMarker(event);
+  				var marker = mapsutil.putMarker(event);
+  				newlyMarker.push(marker);
   			}
   		}
   		var mc = new MarkerClusterer(map, mapsutil.markers);
+  		
+  		for (var i = 0; i < newlyMarker.length; i++) {
+  			mapsutil.putInfoWindow(newlyMarker[i]);
+  		}
 		}).error(function(data, status, headers, config) {
 			// TODO error handling
   		$('#eventSearchSpinner').hide();

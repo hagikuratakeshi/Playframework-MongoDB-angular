@@ -16,6 +16,6 @@ GET     /events/details/:id             controllers.Events.details(id: String)
 
 # APIs
 GET     /api/events/search              controllers.api.EventApi.search(latitude: Double, longitude: Double)
-GET     /api/events/searchWithin        controllers.api.EventApi.searchWithin(latitude: Double, longitude: Double)
+GET     /api/events/searchWithin        controllers.api.EventApi.searchWithin(latitude: Double, longitude: Double, radius: Double = 0.01)
 GET     /api/events/searchPolygon       controllers.api.EventApi.searchPolygon(latMax: Double, latMin: Double, lonMax: Double, lonMin: Double)
 GET     /api/events/details/:id         controllers.api.EventApi.details(id: String)

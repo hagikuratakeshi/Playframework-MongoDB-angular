@@ -5,7 +5,7 @@ var mapsutil = {
 	 */
 	markers : [],
 	
-	/** 
+	/**
 	 * Retains the detailed info windows.
 	 */
 	detailedInfoWindows : [],
@@ -88,6 +88,26 @@ var mapsutil = {
 		});
 		return detailInfoWindow; 
 	},
+	putInfoWindow : function(marker) {
+		var event = marker.event;
+		var infoWindow = new google.maps.InfoWindow({
+			content : '<div class="eventInfoWindowTitle">' + event.name.substr(0, 5) + "..."
+					+ '</div> <img src="' + event.imageLarge.source + '" width="40" height="40" /> ',
+      disableAutoPan : true
+		});
+		
+		var detailInfoWindow = mapsutil.makeDetailedInfoWindow(event);
+		infoWindow.open(map, marker);
+		google.maps.event.addListener(marker, 'click', function() {
+			infoWindow.close();
+			detailInfoWindow.open(map, marker);
+			mapsutil.detailedInfoWindows.push(detailInfoWindow);
+		});
+
+		google.maps.event.addListener(detailInfoWindow, 'closeclick', function() {
+			infoWindow.open(map, marker);
+		});
+	},
 	putMarker : function(event) {
 		if (!event.latlng) {
 			// TODO Get latlng from address
@@ -109,28 +129,30 @@ var mapsutil = {
 			return 0;
 		});
 
-		var infoWindow = new google.maps.InfoWindow({
-			content : '<div class="eventInfoWindowTitle">' + event.name.substr(0, 5) + "..."
-					+ '</div> <img src="' + event.imageLarge.source + '" width="40" height="40" /> ',
-      disableAutoPan : true
-		});
-		
-		var detailInfoWindow = mapsutil.makeDetailedInfoWindow(event);
-		infoWindow.open(map, marker);
-		google.maps.event.addListener(marker, 'click', function() {
-			infoWindow.close();
-			detailInfoWindow.open(map, marker);
-			mapsutil.detailedInfoWindows.push(detailInfoWindow);
-		});
-
-		google.maps.event.addListener(detailInfoWindow, 'closeclick', function() {
-			infoWindow.open(map, marker);
-		});
+		return marker;
+	},
+	getCurrentLocation : function() {
+		if (navigator.geolocation) {
+      return navigator.geolocation.getCurrentPosition();
+    } else {
+    	// not supported by the browser.
+    	return null;
+    }
 	},
 	initialize : function() {
+		
+		//Disable the geo location API by default. 
+    //var currentLocation = mapsutil.getCurrentLocation();
+		var currentLocation  = currentLocation || {
+			coords : {
+			  latitude : 35.66158511497833,
+			  longitude : 139.73045148651127
+			}
+		};
+			
 		var mapOptions = {
 			zoom : 16,
-			center : new google.maps.LatLng(35.66158511497833, 139.73045148651127),
+			center : new google.maps.LatLng(currentLocation.coords.latitude, currentLocation.coords.longitude),
 			mapTypeId : google.maps.MapTypeId.ROADMAP,
 			panControl : false
 		};

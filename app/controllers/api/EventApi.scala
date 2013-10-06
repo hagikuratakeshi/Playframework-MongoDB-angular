@@ -17,10 +17,10 @@ object EventApi extends Controller {
     Ok(Json.toJson(events))
   }
 
-  def searchWithin(latitude: Double, longitude: Double) = Action {
+  def searchWithin(latitude: Double, longitude: Double, radius: Double) = Action {
     val events = Event.find(MongoDBObject("latlng" ->
       MongoDBObject("$geoWithin" ->
-        MongoDBObject("$center" -> List((longitude, latitude), 0.01)))))
+        MongoDBObject("$center" -> List((longitude, latitude), radius)))))
     Ok(Json.toJson(events.toList))
   }
   

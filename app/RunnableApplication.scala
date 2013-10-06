@@ -16,8 +16,18 @@ object ApplicationLauncher extends App {
   //  queryTokyoWebArtBeat 
   //  mongoQueries
   //  mongoGetOneById("523da7b63004644e663a6989")
-  connpassQuery
+//  connpassQuery
 
+  val list = List(1,2,3,4)
+  val list2 = List(31,5,8,7)
+  println(list2 ++ list)
+  println(reverse(list))
+  def reverse[T](list: List[T]):List[T] = {
+    list match {
+      case Nil => Nil
+      case (head :: tail) => reverse(tail) ++ List(head)
+    }
+  }
   def mongoGetOneById(id: String) = {
     val event = Event.findOne(MongoDBObject("_id" -> id))
     println(event.get)
