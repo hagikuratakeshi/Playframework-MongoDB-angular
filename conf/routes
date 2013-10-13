@@ -3,19 +3,19 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET   /                           controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET   /assets/*file               controllers.Assets.at(path="/public", file)
 
-GET     /messages.js                controllers.Application.jsMessages()
+GET   /messages.js                controllers.Application.jsMessages()
 
 # event pages
-GET     /events                         controllers.Events.nearBy()
-GET     /events/details/:id             controllers.Events.details(id: String)
+GET   /events                     controllers.Events.nearBy()
+GET   /events/details/:id         controllers.Events.details(id: String)
 
 # APIs
-GET     /api/events/search              controllers.api.EventApi.search(latitude: Double, longitude: Double)
-GET     /api/events/searchWithin        controllers.api.EventApi.searchWithin(latitude: Double, longitude: Double, radius: Double = 0.01)
-GET     /api/events/searchPolygon       controllers.api.EventApi.searchPolygon(latMax: Double, latMin: Double, lonMax: Double, lonMin: Double)
-GET     /api/events/details/:id         controllers.api.EventApi.details(id: String)
+GET   /api/events/search          controllers.api.EventApi.search(latitude: Double, longitude: Double)
+GET   /api/events/searchWithin    controllers.api.EventApi.searchWithin(latitude: Double, longitude: Double, radius: Double = 0.01)
+GET   /api/events/searchPolygon   controllers.api.EventApi.searchPolygon(latMax: Double, latMin: Double, lonMax: Double, lonMin: Double)
+GET   /api/events/details/:id     controllers.api.EventApi.details(id: String)

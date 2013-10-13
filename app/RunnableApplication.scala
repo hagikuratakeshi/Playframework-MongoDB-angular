@@ -9,6 +9,9 @@ import connpass.fetcher.ConnpassEventFetcher
 import play.api.libs.json.Json
 import play.api.libs.json.JsValue
 import connpass.models.ConnpassEvent
+import java.util.Date
+import play.api.Logger
+import org.joda.time.DateTime
 
 object ApplicationLauncher extends App {
 
@@ -16,13 +19,15 @@ object ApplicationLauncher extends App {
   //  queryTokyoWebArtBeat 
   //  mongoQueries
   //  mongoGetOneById("523da7b63004644e663a6989")
-//  connpassQuery
+  //  connpassQuery
+  queryPastEvents
 
-  val list = List(1,2,3,4)
-  val list2 = List(31,5,8,7)
+  val list = List(1, 2, 3, 4)
+  val list2 = List(31, 5, 8, 7)
   println(list2 ++ list)
   println(reverse(list))
-  def reverse[T](list: List[T]):List[T] = {
+
+  def reverse[T](list: List[T]): List[T] = {
     list match {
       case Nil => Nil
       case (head :: tail) => reverse(tail) ++ List(head)
@@ -61,5 +66,11 @@ object ApplicationLauncher extends App {
       //      println(Event.toDBObject(eventObj))
       println("From Db")
     }
+  }
+
+  def queryPastEvents = {
+    val twoDaysAgo = new DateTime().minusDays(2)
+    val removeResult = Event.remove(MongoDBObject("dateEnd" -> MongoDBObject("$lt" -> twoDaysAgo.toDate())))
+    println("Event Deleted from Tokyo Art Beat : " + removeResult)
   }
 }
