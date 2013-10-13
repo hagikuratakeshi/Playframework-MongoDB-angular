@@ -18,7 +18,7 @@ object Global extends GlobalSettings {
 
     val deletePastEventsTokyoArtBeatActor = 
       Akka.system.actorOf(Props[DeleteUnneededEventsActor], name = "deletePastEventsTokyoArtBeatActor")
-    Akka.system.scheduler.schedule(5 seconds, 1 day, tokyoArtBeatActor, "tick")
+    Akka.system.scheduler.schedule(5 seconds, 1 day, deletePastEventsTokyoArtBeatActor, "tick")
   }
 
   override def onStop(app: Application) {
